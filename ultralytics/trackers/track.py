@@ -54,8 +54,8 @@ def on_predict_postprocess_end(predictor: object, persist: bool = False) -> None
 
     is_obb = predictor.args.task == "obb"
     for i in range(bs):
-        if not persist and predictor.vid_path[i] != str(predictor.save_dir / Path(path[i]).name):  # new video
-            predictor.trackers[i].reset()
+        # if not persist and predictor.vid_path[i] != str(predictor.save_dir / Path(path[i]).name):  # new video
+        #    predictor.trackers[i].reset()
 
         det = (predictor.results[i].obb if is_obb else predictor.results[i].boxes).cpu().numpy()
         if len(det) == 0:
