@@ -23,7 +23,7 @@ keywords: Ultralytics, data loaders, LoadStreams, LoadImages, LoadTensor, YOLO, 
 
 <br><br>
 
-## ::: ultralytics.data.loaders.LoadImagesAndVideos
+## ::: ultralytics.data.loaders.LoadImages
 
 <br><br>
 

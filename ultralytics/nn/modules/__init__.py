@@ -40,12 +40,6 @@ from .block import (
     ResNetLayer,
     ContrastiveHead,
     BNContrastiveHead,
-    RepNCSPELAN4,
-    ADown,
-    SPPELAN,
-    CBFuse,
-    CBLinear,
-    Silence,
 )
 from .conv import (
     CBAM,
@@ -129,10 +123,4 @@ __all__ = (
     "ImagePoolingAttn",
     "ContrastiveHead",
     "BNContrastiveHead",
-    "RepNCSPELAN4",
-    "ADown",
-    "SPPELAN",
-    "CBFuse",
-    "CBLinear",
-    "Silence",
 )

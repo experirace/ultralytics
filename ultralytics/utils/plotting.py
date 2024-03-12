@@ -713,7 +713,6 @@ def plot_images(
     on_plot=None,
     max_subplots=16,
     save=True,
-    conf_thres=0.25,
 ):
     """Plot image grid with labels."""
     if isinstance(images, torch.Tensor):
@@ -779,7 +778,7 @@ def plot_images(
                     c = classes[j]
                     color = colors(c)
                     c = names.get(c, c) if names else c
-                    if labels or conf[j] > conf_thres:
+                    if labels or conf[j] > 0.25:  # 0.25 conf thresh
                         label = f"{c}" if labels else f"{c} {conf[j]:.1f}"
                         annotator.box_label(box, label, color=color, rotated=is_obb)
 
@@ -801,7 +800,7 @@ def plot_images(
                 kpts_[..., 0] += x
                 kpts_[..., 1] += y
                 for j in range(len(kpts_)):
-                    if labels or conf[j] > conf_thres:
+                    if labels or conf[j] > 0.25:  # 0.25 conf thresh
                         annotator.kpts(kpts_[j])
 
             # Plot masks
@@ -817,7 +816,7 @@ def plot_images(
 
                 im = np.asarray(annotator.im).copy()
                 for j in range(len(image_masks)):
-                    if labels or conf[j] > conf_thres:
+                    if labels or conf[j] > 0.25:  # 0.25 conf thresh
                         color = colors(classes[j])
                         mh, mw = image_masks[j].shape
                         if mh != h or mw != w:
@@ -1028,13 +1027,13 @@ def feature_visualization(x, module_type, stage, n=32, save_dir=Path("runs/detec
     for m in ["Detect", "Pose", "Segment"]:
         if m in module_type:
             return
-    _, channels, height, width = x.shape  # batch, channels, height, width
+    batch, channels, height, width = x.shape  # batch, channels, height, width
     if height > 1 and width > 1:
         f = save_dir / f"stage{stage}_{module_type.split('.')[-1]}_features.png"  # filename
 
         blocks = torch.chunk(x[0].cpu(), channels, dim=0)  # select batch index 0, block by channels
         n = min(n, channels)  # number of plots
-        _, ax = plt.subplots(math.ceil(n / 8), 8, tight_layout=True)  # 8 rows x n/8 cols
+        fig, ax = plt.subplots(math.ceil(n / 8), 8, tight_layout=True)  # 8 rows x n/8 cols
         ax = ax.ravel()
         plt.subplots_adjust(wspace=0.05, hspace=0.05)
         for i in range(n):
